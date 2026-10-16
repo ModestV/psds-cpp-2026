@@ -10,11 +10,10 @@ size_t CharChanger(char array[], size_t size, char delimiter) {
     size_t write = 0;
 
     while (read < size - 1 && array[read] != '\0') {
-        unsigned char current =
-            static_cast<unsigned char>(array[read]);
+        unsigned char ch = static_cast<unsigned char>(array[read]);
 
         // Последовательность пробельных символов.
-        if (std::isspace(current)) {
+        if (std::isspace(ch)) {
             array[write++] = delimiter;
 
             do {
@@ -28,40 +27,40 @@ size_t CharChanger(char array[], size_t size, char delimiter) {
             continue;
         }
 
-        // Преобразуем текущий символ.
+        // Преобразуем первый символ группы.
         char transformed;
 
-        if (std::isdigit(current)) {
+        if (std::isdigit(ch)) {
             transformed = '*';
-        } else if (current >= 'a' && current <= 'z') {
-            transformed = static_cast<char>(current - 'a' + 'A');
-        } else if (current >= 'A' && current <= 'Z') {
-            transformed = static_cast<char>(current);
+        } else if (ch >= 'a' && ch <= 'z') {
+            transformed = static_cast<char>(ch - 'a' + 'A');
+        } else if (ch >= 'A' && ch <= 'Z') {
+            transformed = static_cast<char>(ch);
         } else {
             transformed = '_';
         }
 
-        // Считаем последовательность одинаковых символов
-        // после преобразования.
+        // Сначала считаем группу, не изменяя исходные символы.
         size_t count = 1;
         size_t next = read + 1;
 
         while (next < size - 1 && array[next] != '\0') {
-            unsigned char ch =
+            unsigned char next_ch =
                 static_cast<unsigned char>(array[next]);
 
-            if (std::isspace(ch)) {
+            if (std::isspace(next_ch)) {
                 break;
             }
 
             char next_transformed;
 
-            if (std::isdigit(ch)) {
+            if (std::isdigit(next_ch)) {
                 next_transformed = '*';
-            } else if (ch >= 'a' && ch <= 'z') {
-                next_transformed = static_cast<char>(ch - 'a' + 'A');
-            } else if (ch >= 'A' && ch <= 'Z') {
-                next_transformed = static_cast<char>(ch);
+            } else if (next_ch >= 'a' && next_ch <= 'z') {
+                next_transformed =
+                    static_cast<char>(next_ch - 'a' + 'A');
+            } else if (next_ch >= 'A' && next_ch <= 'Z') {
+                next_transformed = static_cast<char>(next_ch);
             } else {
                 next_transformed = '_';
             }
@@ -74,6 +73,7 @@ size_t CharChanger(char array[], size_t size, char delimiter) {
             ++next;
         }
 
+        // Записываем результат группы.
         array[write++] = transformed;
 
         if (count >= 2) {
@@ -82,6 +82,7 @@ size_t CharChanger(char array[], size_t size, char delimiter) {
                 : static_cast<char>('0' + count);
         }
 
+        // Переходим за всю обработанную группу.
         read = next;
     }
 
