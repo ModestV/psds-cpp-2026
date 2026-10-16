@@ -1,5 +1,5 @@
 #include <cstdint>
-#include <stdexcept>
+#include <iostream>
 
 
 enum class CheckFlags : uint8_t {
@@ -13,7 +13,63 @@ enum class CheckFlags : uint8_t {
     ALL = TIME | DATE | USER | CERT | KEYS | DEST
 };
 
+
 void PrintCheckFlags(CheckFlags flags) {
-    (void)flags;
-    throw std::runtime_error{"Not implemented"};
+    const uint8_t value = static_cast<uint8_t>(flags);
+    const uint8_t all = static_cast<uint8_t>(CheckFlags::ALL);
+
+    // Есть неизвестные биты.
+    if ((value & ~all) != 0) {
+        return;
+    }
+
+    std::cout << "[";
+
+    bool first = true;
+
+    if (value & static_cast<uint8_t>(CheckFlags::TIME)) {
+        std::cout << "TIME";
+        first = false;
+    }
+
+    if (value & static_cast<uint8_t>(CheckFlags::DATE)) {
+        if (!first) {
+            std::cout << ",";
+        }
+        std::cout << "DATE";
+        first = false;
+    }
+
+    if (value & static_cast<uint8_t>(CheckFlags::USER)) {
+        if (!first) {
+            std::cout << ",";
+        }
+        std::cout << "USER";
+        first = false;
+    }
+
+    if (value & static_cast<uint8_t>(CheckFlags::CERT)) {
+        if (!first) {
+            std::cout << ",";
+        }
+        std::cout << "CERT";
+        first = false;
+    }
+
+    if (value & static_cast<uint8_t>(CheckFlags::KEYS)) {
+        if (!first) {
+            std::cout << ",";
+        }
+        std::cout << "KEYS";
+        first = false;
+    }
+
+    if (value & static_cast<uint8_t>(CheckFlags::DEST)) {
+        if (!first) {
+            std::cout << ",";
+        }
+        std::cout << "DEST";
+    }
+
+    std::cout << "]";
 }
