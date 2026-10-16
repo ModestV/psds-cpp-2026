@@ -2,23 +2,19 @@
 #include <cstddef>
 
 size_t CharChanger(char array[], size_t size, char delimiter) {
-    if (size == 0) {
-        return 0;
-    }
-
     size_t read = 0;
     size_t write = 0;
 
-    while (read < size - 1 && array[read] != '\0') {
+    while (read < size && array[read] != '\0') {
         unsigned char ch = static_cast<unsigned char>(array[read]);
 
-        // Последовательность пробельных символов.
+        // Обработка последовательности пробельных символов.
         if (std::isspace(ch)) {
             array[write++] = delimiter;
 
             do {
                 ++read;
-            } while (read < size - 1 &&
+            } while (read < size &&
                      array[read] != '\0' &&
                      std::isspace(
                          static_cast<unsigned char>(array[read])
@@ -27,7 +23,7 @@ size_t CharChanger(char array[], size_t size, char delimiter) {
             continue;
         }
 
-        // Преобразуем первый символ группы.
+        // Преобразуем текущий символ.
         char transformed;
 
         if (std::isdigit(ch)) {
@@ -40,11 +36,11 @@ size_t CharChanger(char array[], size_t size, char delimiter) {
             transformed = '_';
         }
 
-        // Сначала считаем группу, не изменяя исходные символы.
+        // Подсчитываем одинаковые символы после преобразования.
         size_t count = 1;
         size_t next = read + 1;
 
-        while (next < size - 1 && array[next] != '\0') {
+        while (next < size && array[next] != '\0') {
             unsigned char next_ch =
                 static_cast<unsigned char>(array[next]);
 
@@ -73,20 +69,17 @@ size_t CharChanger(char array[], size_t size, char delimiter) {
             ++next;
         }
 
-        // Записываем результат группы.
         array[write++] = transformed;
 
         if (count >= 2) {
-            array[write++] = (count >= 10)
+            array[write++] = count >= 10
                 ? '0'
                 : static_cast<char>('0' + count);
         }
 
-        // Переходим за всю обработанную группу.
         read = next;
     }
 
     array[write] = '\0';
-
     return write;
 }
