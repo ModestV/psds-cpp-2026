@@ -1,50 +1,28 @@
-constexpr double operator""_ft_to_m(long double value) {
-    return static_cast<double>(value * 0.3048L);
-}
-
-constexpr double operator""_ft_to_cm(long double value) {
-    return static_cast<double>(value * 30.48L);
-}
-
-constexpr double operator""_ft_to_in(long double value) {
-    return static_cast<double>(value * 12.0L);
-}
+#include <cstddef>
+#include <iostream>
 
 
-constexpr double operator""_in_to_m(long double value) {
-    return static_cast<double>(value * 0.0254L);
-}
+void PrintBits(long long value, size_t bytes) {
+    if (bytes == 0 || bytes > sizeof(long long)) {
+        return;
+    }
 
-constexpr double operator""_in_to_cm(long double value) {
-    return static_cast<double>(value * 2.54L);
-}
+    const unsigned long long number =
+        static_cast<unsigned long long>(value);
 
-constexpr double operator""_in_to_ft(long double value) {
-    return static_cast<double>(value / 12.0L);
-}
+    std::cout << "0b";
 
+    const size_t bits = bytes * 8;
 
-constexpr double operator""_m_to_ft(long double value) {
-    return static_cast<double>(value / 0.3048L);
-}
+    for (size_t i = bits; i > 0; --i) {
+        const size_t bit = i - 1;
 
-constexpr double operator""_m_to_in(long double value) {
-    return static_cast<double>(value / 0.0254L);
-}
+        std::cout << ((number >> bit) & 1);
 
-constexpr double operator""_m_to_cm(long double value) {
-    return static_cast<double>(value * 100.0L);
-}
+        if (bit > 0 && bit % 4 == 0) {
+            std::cout << "'";
+        }
+    }
 
-
-constexpr double operator""_cm_to_m(long double value) {
-    return static_cast<double>(value / 100.0L);
-}
-
-constexpr double operator""_cm_to_ft(long double value) {
-    return static_cast<double>(value / 30.48L);
-}
-
-constexpr double operator""_cm_to_in(long double value) {
-    return static_cast<double>(value / 2.54L);
+    std::cout << '\n';
 }
