@@ -2,36 +2,48 @@
 #include <cstddef>
 
 
-size_t CharChanger(char array[], size_t size, char delimiter = ' ') {
-    if (array == nullptr || size == 0) {
-        return 0;
-    }
-
+size_t CharChanger(char array[], size_t size, char delimiter) {
     size_t read = 0;
     size_t write = 0;
 
-    while (read < size - 1 && array[read] != '\0') {
+    while (read < size - 1) {
         char current = array[read];
 
-        // Преобразуем символ.
+        // Пробелы обрабатываем отдельно.
+        // Они всегда превращаются только в один delimiter.
+        if (std::isspace(static_cast<unsigned char>(current))) {
+            array[write++] = delimiter;
+
+            do {
+                ++read;
+            } while (read < size - 1 &&
+                     std::isspace(static_cast<unsigned char>(array[read])));
+
+            continue;
+        }
+
+        // Определяем, во что превратится текущий символ.
         if (std::isdigit(static_cast<unsigned char>(current))) {
             current = '*';
         } else if (std::islower(static_cast<unsigned char>(current))) {
             current = static_cast<char>(
                 std::toupper(static_cast<unsigned char>(current))
             );
-        } else if (current == ' ') {
-            current = delimiter;
         } else if (!std::isupper(static_cast<unsigned char>(current))) {
             current = '_';
         }
 
-        // Ищем последовательность одинаковых символов.
+        // Считаем последовательность одинаковых символов.
         size_t count = 1;
         size_t next = read + 1;
 
-        while (next < size - 1 && array[next] != '\0') {
+        while (next < size - 1) {
             char next_char = array[next];
+
+            // Пробел заканчивает текущую последовательность.
+            if (std::isspace(static_cast<unsigned char>(next_char))) {
+                break;
+            }
 
             if (std::isdigit(static_cast<unsigned char>(next_char))) {
                 next_char = '*';
@@ -39,8 +51,6 @@ size_t CharChanger(char array[], size_t size, char delimiter = ' ') {
                 next_char = static_cast<char>(
                     std::toupper(static_cast<unsigned char>(next_char))
                 );
-            } else if (next_char == ' ') {
-                next_char = delimiter;
             } else if (!std::isupper(static_cast<unsigned char>(next_char))) {
                 next_char = '_';
             }
@@ -53,18 +63,13 @@ size_t CharChanger(char array[], size_t size, char delimiter = ' ') {
             ++next;
         }
 
-        // Пробелы после преобразования должны быть только одним delimiter.
-        if (current == delimiter && delimiter == ' ') {
-            array[write++] = current;
-        } else {
-            array[write++] = current;
+        array[write++] = current;
 
-            if (count > 1) {
-                if (count >= 10) {
-                    array[write++] = '0';
-                } else {
-                    array[write++] = static_cast<char>('0' + count);
-                }
+        if (count >= 2) {
+            if (count >= 10) {
+                array[write++] = '0';
+            } else {
+                array[write++] = static_cast<char>('0' + count);
             }
         }
 
