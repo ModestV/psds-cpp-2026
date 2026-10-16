@@ -1,61 +1,73 @@
+```cpp
 #include <cctype>
 #include <cstddef>
 
-
 size_t CharChanger(char array[], size_t size, char delimiter) {
+    if (size == 0) {
+        return 0;
+    }
+
     size_t read = 0;
     size_t write = 0;
 
-    while (read < size - 1) {
-        char current = array[read];
+    while (read < size - 1 && array[read] != '\0') {
+        unsigned char current =
+            static_cast<unsigned char>(array[read]);
 
-        // Пробелы обрабатываем отдельно.
-        // Они всегда превращаются только в один delimiter.
-        if (std::isspace(static_cast<unsigned char>(current))) {
+        // Последовательность пробельных символов.
+        if (std::isspace(current)) {
             array[write++] = delimiter;
 
             do {
                 ++read;
             } while (read < size - 1 &&
-                     std::isspace(static_cast<unsigned char>(array[read])));
+                     array[read] != '\0' &&
+                     std::isspace(
+                         static_cast<unsigned char>(array[read])
+                     ));
 
             continue;
         }
 
-        // Определяем, во что превратится текущий символ.
-        if (std::isdigit(static_cast<unsigned char>(current))) {
-            current = '*';
-        } else if (std::islower(static_cast<unsigned char>(current))) {
-            current = static_cast<char>(
-                std::toupper(static_cast<unsigned char>(current))
-            );
-        } else if (!std::isupper(static_cast<unsigned char>(current))) {
-            current = '_';
+        // Преобразуем текущий символ.
+        char transformed;
+
+        if (std::isdigit(current)) {
+            transformed = '*';
+        } else if (current >= 'a' && current <= 'z') {
+            transformed = static_cast<char>(current - 'a' + 'A');
+        } else if (current >= 'A' && current <= 'Z') {
+            transformed = static_cast<char>(current);
+        } else {
+            transformed = '_';
         }
 
-        // Считаем последовательность одинаковых символов.
+        // Считаем последовательность одинаковых символов
+        // после преобразования.
         size_t count = 1;
         size_t next = read + 1;
 
-        while (next < size - 1) {
-            char next_char = array[next];
+        while (next < size - 1 && array[next] != '\0') {
+            unsigned char ch =
+                static_cast<unsigned char>(array[next]);
 
-            // Пробел заканчивает текущую последовательность.
-            if (std::isspace(static_cast<unsigned char>(next_char))) {
+            if (std::isspace(ch)) {
                 break;
             }
 
-            if (std::isdigit(static_cast<unsigned char>(next_char))) {
-                next_char = '*';
-            } else if (std::islower(static_cast<unsigned char>(next_char))) {
-                next_char = static_cast<char>(
-                    std::toupper(static_cast<unsigned char>(next_char))
-                );
-            } else if (!std::isupper(static_cast<unsigned char>(next_char))) {
-                next_char = '_';
+            char next_transformed;
+
+            if (std::isdigit(ch)) {
+                next_transformed = '*';
+            } else if (ch >= 'a' && ch <= 'z') {
+                next_transformed = static_cast<char>(ch - 'a' + 'A');
+            } else if (ch >= 'A' && ch <= 'Z') {
+                next_transformed = static_cast<char>(ch);
+            } else {
+                next_transformed = '_';
             }
 
-            if (next_char != current) {
+            if (next_transformed != transformed) {
                 break;
             }
 
@@ -63,14 +75,12 @@ size_t CharChanger(char array[], size_t size, char delimiter) {
             ++next;
         }
 
-        array[write++] = current;
+        array[write++] = transformed;
 
         if (count >= 2) {
-            if (count >= 10) {
-                array[write++] = '0';
-            } else {
-                array[write++] = static_cast<char>('0' + count);
-            }
+            array[write++] = (count >= 10)
+                ? '0'
+                : static_cast<char>('0' + count);
         }
 
         read = next;
@@ -80,3 +90,4 @@ size_t CharChanger(char array[], size_t size, char delimiter) {
 
     return write;
 }
+```
