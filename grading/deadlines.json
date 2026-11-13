@@ -1,4 +1,26 @@
 {
+  "week_06": {
+    "deadline": "2026-11-20 23:59",
+    "tasks": {
+      "unique_ptr": {
+        "max_score": 100,
+        "description": "Умный указатель уникального владения"
+      },
+      "smart_ptr": {
+        "max_score": 200,
+        "description": "Умные указатели"
+      },
+      "binary_records": {
+        "max_score": 300,
+        "description": "Бинарный файл записей"
+      },
+      "simple_list": {
+        "max_score": 400,
+        "description": "Двусвязный список (упрощенный)"
+      }
+    }
+  },
+
   "week_05": {
     "deadline": "2026-11-13 23:59",
     "tasks": {

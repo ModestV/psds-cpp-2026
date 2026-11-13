@@ -185,7 +185,16 @@ for task in "${tasks[@]}"; do
   if cmake --build "$BUILD_DIR" --target "test_$task" --parallel; then
     echo "✅ test_$task built successfully"
 
-    if "$BUILD_DIR/tasks/test_$task"; then
+    # gtest prints "[  PASSED  ] N test(s)." only if the tests really ran:
+    # an own main() in the solution replaces gtest_main and exits with 0
+    test_log=$(mktemp)
+    "$BUILD_DIR/tasks/test_$task" 2>&1 | tee "$test_log"
+    test_status=${PIPESTATUS[0]}
+    tests_ran=false
+    grep -qE '^\[  PASSED  \] [0-9]+ tests?\.' "$test_log" && tests_ran=true
+    rm -f "$test_log"
+
+    if (( test_status == 0 )) && $tests_ran; then
       echo "✅ test_$task PASSED"
       passed_count+=1
       passed_tasks+=("$task")
@@ -196,6 +205,7 @@ for task in "${tasks[@]}"; do
       failed_tasks+=("$task")
     fi
   else
+     (( test_status == 0 )) && echo "⚠️ test_$task: tests did not run (main() in the solution?)"
     echo "❌ test_$task build FAILED"
     is_ci && echo "::error title=$task::test_$task build FAILED"
     failed_count+=1
