@@ -1,4 +1,112 @@
 {
+  "week_06": {
+    "deadline": "2026-11-20 23:59",
+    "tasks": {
+      "unique_ptr": {
+        "max_score": 100,
+        "description": "Умный указатель уникального владения"
+      },
+      "smart_ptr": {
+        "max_score": 200,
+        "description": "Умные указатели"
+      },
+      "binary_records": {
+        "max_score": 300,
+        "description": "Бинарный файл записей"
+      },
+      "simple_list": {
+        "max_score": 400,
+        "description": "Двусвязный список (упрощенный)"
+      }
+    }
+  },
+
+  "week_05": {
+    "deadline": "2026-11-13 23:59",
+    "tasks": {
+      "tracer": {
+        "max_score": 100,
+        "description": "Трассировщик"
+      },
+      "string_view": {
+        "max_score": 200,
+        "description": "Представление строки"
+      },
+      "cow_string": {
+        "max_score": 300,
+        "description": "Коровья строка"
+      },
+      "simple_vector": {
+        "max_score": 400,
+        "description": "Простой вектор"
+      }
+    }
+  },
+
+  "week_04": {
+    "deadline": "2026-11-06 23:59",
+    "tasks": {
+      "stack": {
+        "max_score": 100,
+        "description": "Стек"
+      },
+      "queue": {
+        "max_score": 200,
+        "description": "Очередь"
+      },
+      "ring_buffer": {
+        "max_score": 300,
+        "description": "Кольцевой буфер"
+      },
+      "phasor": {
+        "max_score": 400,
+        "description": "Комплексная амплитуда"
+      }
+    }
+  },
+
+  "week_03": {
+    "deadline": "2026-10-30 23:59",
+    "tasks": {
+      "data_stats": {
+        "max_score": 100,
+        "description": "Статистика данных"
+      },
+      "unique": {
+        "max_score": 100,
+        "description": "Уникальные элементы"
+      },
+      "range": {
+        "max_score": 100,
+        "description": "Диапазон элементов"
+      },
+      "minmax": {
+        "max_score": 100,
+        "description": "Минимум и максимум"
+      },
+      "find_all": {
+        "max_score": 100,
+        "description": "Найти все элементы"
+      },
+      "os_overload": {
+        "max_score": 100,
+        "description": "Перегрузка оператора вывода"
+      },
+      "easy_compare": {
+        "max_score": 100,
+        "description": "Операторы сравнения"
+      },
+      "filter": {
+        "max_score": 100,
+        "description": "Фильтрация данных"
+      },
+      "enum_operators": {
+        "max_score": 200,
+        "description": "Перегрузка побитовых операторов"
+      }
+    }
+  },
+
   "week_02": {
     "deadline": "2026-10-23 23:59",
     "tasks": {
@@ -16,7 +124,7 @@
       },
       "last_of_us": {
         "max_score": 200,
-        "description": "Найти последний элемент, удовлетворяющий условию"
+        "description": "Найти последний элемент удовлетворяющий условию"
       },
       "little_big": {
         "max_score": 200,
