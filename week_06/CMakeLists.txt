@@ -11,5 +11,6 @@ add_subdirectory(tasks)
 
 # Создать исполняемый файл для каждого примера
 if (BUILD_EXAMPLES_06_WEEK)
-
+    add_example(unique_ptr_base ${EXAMPLES_DIR}/unique_ptr_base.cpp)
+    add_example(smart_ptr ${EXAMPLES_DIR}/smart_ptr.cpp)
 endif()

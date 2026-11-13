@@ -199,13 +199,13 @@ for task in "${tasks[@]}"; do
       passed_count+=1
       passed_tasks+=("$task")
     else
+      (( test_status == 0 )) && echo "⚠️ test_$task: tests did not run (main() in the solution?)"
       echo "❌ test_$task FAILED"
       is_ci && echo "::error title=$task::test_$task FAILED"
       failed_count+=1
       failed_tasks+=("$task")
     fi
   else
-     (( test_status == 0 )) && echo "⚠️ test_$task: tests did not run (main() in the solution?)"
     echo "❌ test_$task build FAILED"
     is_ci && echo "::error title=$task::test_$task build FAILED"
     failed_count+=1
